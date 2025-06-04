@@ -134,14 +134,11 @@ async def number_step(message: Message, state: FSMContext):
             reply_markup=markup,
         )
     except TelegramAPIError as err:
-        logging.error("Ошибка Telegram API: %s", err)
-    except Exception as err:
         logging.error(
-            "Ошибка при отправке сообщения администратору: %s Текст заявки: %s",
+            "Ошибка Telegram API: %s Текст заявки: %s",
             err,
             text_data,
         )
-
     await state.clear()
 
 
@@ -175,10 +172,8 @@ async def accept(callback: CallbackQuery):
             parse_mode=ParseMode.MARKDOWN,
         )
     except TelegramAPIError as err:
-        logging.error("Ошибка Telegram API: %s", err)
-    except Exception as err:
         logging.error(
-            "Ошибка при отправке сообщения пользователю: %s Текст сообщения: %s",
+            "Ошибка Telegram API: %s Текст сообщения: %s",
             err,
             reply_user_text,
         )
@@ -202,8 +197,6 @@ async def decline(callback: CallbackQuery):
         )
     except TelegramAPIError as err:
         logging.error("Ошибка Telegram API: %s", err)
-    except Exception as err:
-        logging.error("Ошибка при отправке сообщения пользователю: %s", err)
 
 
 async def main():
