@@ -1,3 +1,5 @@
+"""Module for fast editing texts."""
+
 from config import MIN_AGE
 
 HELLO_MESSAGE = """

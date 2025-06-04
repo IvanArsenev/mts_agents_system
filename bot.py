@@ -1,3 +1,5 @@
+"""Bot module to send forms to administrator."""
+
 import asyncio
 import logging
 from datetime import datetime
@@ -6,6 +8,7 @@ from aiogram import Bot, Dispatcher, F, Router
 from aiogram.enums import ParseMode
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
+from aiogram.exceptions import TelegramAPIError
 from aiogram.types import (
     CallbackQuery,
     InlineKeyboardButton,
@@ -130,6 +133,8 @@ async def number_step(message: Message, state: FSMContext):
             text=f"✅ Новая заявка\n{text_data}",
             reply_markup=markup,
         )
+    except TelegramAPIError as err:
+        logging.error("Ошибка Telegram API: %s", err)
     except Exception as err:
         logging.error(
             "Ошибка при отправке сообщения администратору: %s Текст заявки: %s",
@@ -169,6 +174,8 @@ async def accept(callback: CallbackQuery):
             text=reply_user_text,
             parse_mode=ParseMode.MARKDOWN,
         )
+    except TelegramAPIError as err:
+        logging.error("Ошибка Telegram API: %s", err)
     except Exception as err:
         logging.error(
             "Ошибка при отправке сообщения пользователю: %s Текст сообщения: %s",
@@ -193,6 +200,8 @@ async def decline(callback: CallbackQuery):
             chat_id=user_id,
             text="Сожалеем, но Ваша заявка отклонена!",
         )
+    except TelegramAPIError as err:
+        logging.error("Ошибка Telegram API: %s", err)
     except Exception as err:
         logging.error("Ошибка при отправке сообщения пользователю: %s", err)
 
